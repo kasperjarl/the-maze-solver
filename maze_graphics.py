@@ -13,7 +13,7 @@ class Cell:
         self._y2 = bottom_right_corner.y
         self._win = _win
 
-    def draw(self, cell, fill_color="red"):
+    def draw(self, cell, fill_color="blue"):
         if cell.has_left_wall:
             left_wall = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
             left_wall.draw(self._win.canvas, fill_color)
@@ -27,5 +27,15 @@ class Cell:
             top_wall = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
             top_wall.draw(self._win.canvas, fill_color)
 
-    def draw_move(self, from_cell, to_cell, fill_color="blue"):
-        pass
+    def draw_move(self, to_cell, undo=False):
+        line_color = "red"
+        if undo:
+            line_color = "gray"
+
+        from_center_point = Point(((self._x1 + self._x2) / 2), ((self._y1 + self._y2) / 2))
+        to_center_point = Point(((to_cell._x1 + to_cell._x2) / 2), ((to_cell._y1 + to_cell._y2) / 2))
+
+        from_to_line = Line(from_center_point, to_center_point)
+        from_to_line.draw(self._win.canvas, line_color)
+
+        
