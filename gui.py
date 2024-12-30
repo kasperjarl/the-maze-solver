@@ -18,9 +18,6 @@ class Window:
     def draw_line(self, line, fill_color="black"):
         line.draw(self.canvas, fill_color)
 
-    def draw_cell(self, cell, fill_color="red"): #This is what I want to end of with
-        cell.draw(cell, fill_color)
-
     def wait_for_close(self):
         self.running = True
 
