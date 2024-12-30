@@ -47,8 +47,8 @@ class Line:
         )
 
 class Cell:
-    def __init__(self, top_left_corner, bottom_right_corner, _win, has_left_wall=True, has_right_wall=True,
-                 has_top_wall=True, has_bottom_wall=True):
+    def __init__(self, top_left_corner, bottom_right_corner, _win, has_left_wall=True, 
+                 has_right_wall=True, has_top_wall=True, has_bottom_wall=True):
         self.has_left_wall = has_left_wall
         self.has_right_wall = has_right_wall
         self.has_top_wall = has_top_wall
@@ -63,15 +63,27 @@ class Cell:
         if cell.has_left_wall:
             left_wall = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
             left_wall.draw(self._win.canvas, fill_color)
+        elif not cell.has_left_wall:
+            left_wall = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
+            left_wall.draw(self._win.canvas, "white")
         if cell.has_bottom_wall:
             bottom_wall = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
             bottom_wall.draw(self._win.canvas, fill_color)
+        elif not cell.has_bottom_wall:
+            bottom_wall = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
+            bottom_wall.draw(self._win.canvas, "white")   
         if cell.has_right_wall:
             right_wall = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
             right_wall.draw(self._win.canvas, fill_color)
+        elif not cell.has_right_wall:
+            right_wall = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
+            right_wall.draw(self._win.canvas, "white")
         if cell.has_top_wall:
             top_wall = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
             top_wall.draw(self._win.canvas, fill_color)
+        elif not cell.has_top_wall:
+            top_wall = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
+            top_wall.draw(self._win.canvas, "white")
 
     def draw_move(self, to_cell, undo=False):
         line_color = "red"
