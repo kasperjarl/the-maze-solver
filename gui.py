@@ -48,7 +48,7 @@ class Line:
 
 class Cell:
     def __init__(self, top_left_corner, bottom_right_corner, _win, has_left_wall=True, 
-                 has_right_wall=True, has_top_wall=True, has_bottom_wall=True):
+                 has_right_wall=True, has_top_wall=True, has_bottom_wall=True, visited=False):
         self.has_left_wall = has_left_wall
         self.has_right_wall = has_right_wall
         self.has_top_wall = has_top_wall
@@ -58,6 +58,7 @@ class Cell:
         self._y1 = top_left_corner.y
         self._y2 = bottom_right_corner.y
         self._win = _win
+        self.visited = visited
 
     def draw(self, cell, fill_color="blue"):
         if cell.has_left_wall:
