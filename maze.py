@@ -60,10 +60,12 @@ class Maze:
 
     def _break_entrance_and_exit(self):
         cell_entrance = self._cells[0][0]
-        cell_entrance.has_top_wall = False
+        cell_entrance.has_top_wall = False 
+        # self._cells[0][0].draw(self._cells[0][0])
         self._draw_cell(self.num_cols, self.num_rows)
         cell_exit = self._cells[-1][-1]
         cell_exit.has_bottom_wall = False
+        # self._cells[0][0].draw(self._cells[-1][-1])
         self._draw_cell(self.num_cols, self.num_rows)
 
     def is_valid_cell(self, i, j):
@@ -142,30 +144,73 @@ class Maze:
          return self._solve_r(i=0, j=0)
     
     def _solve_r(self, i, j):
-         self._animate()
-         self._cells[i][j].visited = True
+        self._animate()
+        self._cells[i][j].visited = True
          
          # if at the end cell:
-         if self._cells[i][j] == self._cells[-1][-1]:
-              return True
+        if self._cells[i][j] == self._cells[-1][-1]:
+            return True
          
 
          ### I think it's something like the below, where we need to add if there is a wall.
-         ### We also need to figure out the "for each direction" part
-                 
-        # above_cell
-         if self.is_valid_cell(i, j - 1) and not self._cells[i][j - 1].visited:
-              to_visit.append(self._cells[i][j - 1])
-        # left_cell
-         if self.is_valid_cell(i - 1, j) and not self._cells[i - 1][j].visited:
-              to_visit.append(self._cells[i - 1][j])
-        # under_cell
-         if self.is_valid_cell(i, j + 1) and not self._cells[i][j + 1].visited:
-              to_visit.append(self._cells[i][j + 1]) 
-        # right_cell
-         if self.is_valid_cell(i + 1, j) and not self._cells[i + 1][j].visited:
-              to_visit.append(self._cells[i + 1][j])
+         ### We also need to figure out the "for each direction" par
+        directions = []
 
+        # above_cell
+        if self.is_valid_cell(i, j - 1) and not self._cells[i][j - 1].visited and self._cells[i][j].has_top_wall == False:
+            directions.append(self._cells[i][j - 1])
+        # left_cell
+        if self.is_valid_cell(i - 1, j) and not self._cells[i - 1][j].visited and self._cells[i][j].has_left_wall == False:
+            directions.append(self._cells[i - 1][j])
+        # under_cell
+        if self.is_valid_cell(i, j + 1) and not self._cells[i][j + 1].visited and self._cells[i][j].has_bottom_wall == False:
+            directions.append(self._cells[i][j + 1]) 
+        # right_cell
+        if self.is_valid_cell(i + 1, j) and not self._cells[i + 1][j].visited and self._cells[i][j].has_right_wall == False:
+            directions.append(self._cells[i + 1][j])
+
+        for random_choice in directions:
+            self._cells[i][j].draw_move(random_choice)
+
+            if (
+                 (self._cells[i][j]._x1, self._cells[i][j]._y1) ==
+                 (random_choice._x1, random_choice._y2)
+                ):
+                
+                if self._solve_r(i, j - 1):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(random_choice, undo=True)
+            # Left Wall break down
+            if (
+                 (self._cells[i][j]._x1, self._cells[i][j]._y1) ==
+                 (random_choice._x2, random_choice._y1)
+            ):
+                if self._solve_r(i - 1, j):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(random_choice, undo=True)
+
+            # Bottom wall break down
+            if (
+                 (self._cells[i][j]._x2, self._cells[i][j]._y2) ==
+                 (random_choice._x2, random_choice._y1)
+            ):
+                if self._solve_r(i, j + 1):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(random_choice, undo=True)
+            
+            # Right wall break dwon
+            if (
+                 (self._cells[i][j]._x2, self._cells[i][j]._y2) ==
+                 (random_choice._x1, random_choice._y2)
+            ):
+                if self._solve_r(i + 1, j):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(random_choice, undo=True)
+        return False
 
 
 
